@@ -3,11 +3,13 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "jest --verbose"
   },
   "author": "Antero Vainio",
   "license": "MIT",
   "devDependencies": {
+    "jest": "^26.4.2",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
