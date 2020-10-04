@@ -48,9 +48,32 @@ const mostBlogs = blogs => {
   return most
 }
 
+const mostLikes = blogs => {
+  if (blogs.length === 0) {
+    return undefined
+  }
+  let grouped = _.groupBy(blogs, blog => blog.author)
+  grouped = Object.keys(grouped).map(key => {
+    return {
+      author: key,
+      likes: totalLikes(grouped[key])
+    }
+  })
+
+  most = grouped[0]
+  grouped.forEach(item => {
+    if (item.likes > most.likes) {
+      most = item
+    }
+  })
+
+  return most
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }

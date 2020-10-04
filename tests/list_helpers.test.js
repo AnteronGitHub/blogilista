@@ -122,3 +122,23 @@ describe('most blogs', () => {
     })
   })
 })
+
+describe('most likes', () => {
+  test('of empty list is undefined', () => {
+    expect(listHelper.mostLikes([])).toBe(undefined)
+  })
+
+  test('when list has only one blog equals the only author', () => {
+    expect(listHelper.mostLikes(listWithOneLike)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
+  })
+
+  test('of a bigger list is calculated right', () => {
+    expect(listHelper.mostLikes(blogs)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17
+    })
+  })
+})
