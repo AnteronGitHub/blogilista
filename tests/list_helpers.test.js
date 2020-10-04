@@ -102,3 +102,23 @@ describe('favorite blog', () => {
     })
   })
 })
+
+describe('most blogs', () => {
+  test('of empty list is undefined', () => {
+    expect(listHelper.mostBlogs([])).toBe(undefined)
+  })
+
+  test('when list has only one blog equals the only author', () => {
+    expect(listHelper.mostBlogs(listWithOneLike)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1
+    })
+  })
+
+  test('of a bigger list is calculated right', () => {
+    expect(listHelper.mostBlogs(blogs)).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3
+    })
+  })
+})
