@@ -103,6 +103,18 @@ test('blog can be deleted', async () => {
   expect(response.body).toHaveLength(initialBlogs.length - 1)
 })
 
+test('blog can be updated', async () => {
+  let response = await api.get('/api/blogs')
+  const idToUpdate = response.body[0].id
+  await api
+    .put(`/api/blogs/${idToUpdate}`)
+    .send({ likes: 99 })
+    .expect(200)
+
+  response = await api.get('/api/blogs')
+  expect(response.body.find(blog => blog.id === idToUpdate).likes).toBe(99)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
