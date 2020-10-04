@@ -62,6 +62,22 @@ test('blog can be created', async () => {
   expect(response.body).toHaveLength(initialBlogs.length + 1)
 })
 
+test('blog can be created without likes specified', async () => {
+  const blogObject = {
+    title: 'zip',
+    author: 'zap',
+    url: 'http://example.com'
+  }
+  let response = await api
+    .post('/api/blogs')
+    .send(blogObject)
+
+  expect(response.body.likes).toBe(0)
+
+  response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(initialBlogs.length + 1)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
