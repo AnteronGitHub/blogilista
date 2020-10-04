@@ -10,6 +10,15 @@ blogsRouter.get('/', (request, response, next) => {
     .catch(error => next(error))
 })
 
+blogsRouter.delete('/:id', (request, response, next) => {
+  Blog
+    .findByIdAndRemove(request.params.id)
+    .then(blogs => {
+      response.status(204).json(blogs)
+    })
+    .catch(error => next(error))
+})
+
 blogsRouter.post('/', (request, response, next) => {
   const blog = new Blog(request.body)
 

@@ -92,6 +92,17 @@ test('blog can not be created without title and author', async () => {
   expect(response.body).toHaveLength(initialBlogs.length)
 })
 
+test('blog can be deleted', async () => {
+  let response = await api.get('/api/blogs')
+  const idToRemove = response.body[0].id
+  await api
+    .delete(`/api/blogs/${idToRemove}`)
+    .expect(204)
+
+  response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(initialBlogs.length - 1)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
