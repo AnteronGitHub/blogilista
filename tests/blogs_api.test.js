@@ -78,6 +78,20 @@ test('blog can be created without likes specified', async () => {
   expect(response.body).toHaveLength(initialBlogs.length + 1)
 })
 
+test('blog can not be created without title and author', async () => {
+  const blogObject = {
+    url: 'http://example.com'
+  }
+  let response = await api
+    .post('/api/blogs')
+    .send(blogObject)
+
+  expect(response.statusCode).toBe(400)
+
+  response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(initialBlogs.length)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
