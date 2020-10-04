@@ -42,6 +42,26 @@ test('blog entries contain proper id field', async () => {
   })
 })
 
+test('blog can be created', async () => {
+  const blogObject = {
+    title: 'zip',
+    author: 'zap',
+    url: 'http://example.com',
+    likes: 11
+  }
+  let response = await api
+    .post('/api/blogs')
+    .send(blogObject)
+
+  expect(response.body.title).toEqual(blogObject.title)
+  expect(response.body.author).toEqual(blogObject.author)
+  expect(response.body.url).toEqual(blogObject.url)
+  expect(response.body.likes).toEqual(blogObject.likes)
+
+  response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(initialBlogs.length + 1)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
