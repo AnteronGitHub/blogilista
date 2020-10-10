@@ -11,13 +11,22 @@ blogsRouter.get('/', async (request, response, next) => {
   response.json(blogs.map(b => b.toJSON()))
 })
 
-blogsRouter.delete('/:id', (request, response, next) => {
-  Blog
-    .findByIdAndRemove(request.params.id)
-    .then(blogs => {
-      response.status(204).json(blogs)
-    })
-    .catch(error => next(error))
+blogsRouter.delete('/:id', async (request, response, next) => {
+  const token = request.token
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  const blog = await Blog.findById(request.params.id)
+  if (user && blog && blog.user.toString() === user.id.toString()) {
+    user.blogs = user.blogs.filter(blog => blog.id.toString() !== user.id.toString())
+    await blog.remove()
+    await user.save()
+    return response.status(204).json({ message: 'blog removed' })
+  }
+  return response.status(400).json({ error: 'no matching blogs for authenticated users was found' })
 })
 
 blogsRouter.put('/:id', (request, response, next) => {
