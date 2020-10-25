@@ -50,6 +50,7 @@ blogsRouter.put('/:id', (request, response, next) => {
       runValidators: true,
       context: 'query'
     })
+    .populate('user', { username: 1, name: 1, id: 1 })
     .then(updatedBlog => response.json(updatedBlog))
     .catch(error => next(error))
 })
@@ -73,6 +74,7 @@ blogsRouter.post('/', async (request, response, next) => {
   })
 
   const savedBlog = await blog.save()
+  savedBlog.populate('user', { username: 1, name: 1, id: 1 }).execPopulate()
 
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
